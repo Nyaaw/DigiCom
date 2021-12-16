@@ -8,20 +8,27 @@ public class Manager : MonoBehaviour
     void Start()
     {
         List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:/Users/Admin/Documents/Dolphin Emulator"));
-        int y = 10;
+        int i = 0;
         int sizeOfTable = 8;
         foreach (string directory in directoryList)
         {
-            y+= sizeOfTable;
+            i+= sizeOfTable;
             GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
             table.transform.localScale = new Vector3(sizeOfTable, 1, sizeOfTable);
-            table.transform.position = new Vector3(y, 0, y);
+            table.transform.position = new Vector3(0, 0, i++);
             Debug.Log(directory.ToString());
             List<string> subDirectoriesList = new List<string>(System.IO.Directory.EnumerateDirectories(directory.ToString()));
             foreach (string subDir in subDirectoriesList)
-            {
+            {               
                 GameObject subCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                subCube.transform.position = new Vector3(y++, 0.5f, y++);
+                subCube.transform.SetParent(table.transform);
+
+                Vector3 scale = subCube.transform.localScale;
+                float x = scale.x;
+                float z = scale.z;
+
+                i += 2;
+                subCube.transform.position = new Vector3(0, 1, i);
             }
         }
     }
