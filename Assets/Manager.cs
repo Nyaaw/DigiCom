@@ -7,7 +7,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:/Users/Admin/Documents/Dolphin Emulator"));
+        List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:/Users/Rip/Documents/CODE/DigiCom"));
         int y = 10;
         int sizeOfTable = 8;
         foreach (string directory in directoryList)
