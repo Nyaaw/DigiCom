@@ -7,11 +7,12 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        const float SCALEMULTIPLIER = 3.5f;
-        const float DIRECTORIESHEIGHT = 1.3f;
-        const float EDGEOFTABLE = 0.4325f;
-        const float GAPBETWEENELEMENTS = 0.2171f;
-        List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:/Users/Admin/Documents/Dolphin Emulator"));
+        const float SCALE_MULTIPLIER = 3.5f;
+        const float DIRECTORIES_HEIGHT = 1.3f;
+        const float EDGE_OF_TABLE = 0.4325f;
+        const float GAP_BETWEEN_ELEMENTS = 0.2171f;
+        const int GAP_BETWEEN_TABLES = 4;
+        List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:"));
         int i = 0;
         int sizeOfTable = 8;
         float x;
@@ -21,10 +22,10 @@ public class Manager : MonoBehaviour
         int yInTable;
         foreach (string directory in directoryList)
         {
-            i+= sizeOfTable;
+            i+= (sizeOfTable + GAP_BETWEEN_TABLES);
             GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
             table.transform.localScale = new Vector3(sizeOfTable, 1, sizeOfTable);
-            table.transform.position = new Vector3(0, 1, i++);
+            table.transform.position = new Vector3(0, 1, i);
             List<string> subDirectoriesList = new List<string>(System.IO.Directory.EnumerateDirectories(directory.ToString()));
             List<string> subFilesList = new List<string>(System.IO.Directory.EnumerateFiles(directory.ToString()));
             List<string> subElementsList = new List<string>(subDirectoriesList);
@@ -41,16 +42,16 @@ public class Manager : MonoBehaviour
                 x = scale.x;
                 z = scale.z;
 
-                if ((-SCALEMULTIPLIER * z) + xInTable * GAPBETWEENELEMENTS >= EDGEOFTABLE)
+                if ((-SCALE_MULTIPLIER * z) + xInTable * GAP_BETWEEN_ELEMENTS >= EDGE_OF_TABLE)
                 {
                     xInTable = 0;
                     yInTable++;
                 }
 
-                x = (-SCALEMULTIPLIER * x) + yInTable * GAPBETWEENELEMENTS;
-                z = (-SCALEMULTIPLIER * z) + xInTable * GAPBETWEENELEMENTS;
+                x = (-SCALE_MULTIPLIER * x) + yInTable * GAP_BETWEEN_ELEMENTS;
+                z = (-SCALE_MULTIPLIER * z) + xInTable * GAP_BETWEEN_ELEMENTS;
 
-                subCube.transform.localPosition = new Vector3(x, DIRECTORIESHEIGHT, z);
+                subCube.transform.localPosition = new Vector3(x, DIRECTORIES_HEIGHT, z);
                 xInTable++;
             }
         }
