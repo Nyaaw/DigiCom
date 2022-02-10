@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using System.IO;
 using TMPro;
 
 public class Manager : MonoBehaviour
@@ -16,7 +17,6 @@ public class Manager : MonoBehaviour
         const float EDGE_OF_TABLE = 0.4325f;
         const float GAP_BETWEEN_ELEMENTS = 0.2171f;
         const int GAP_BETWEEN_TABLES = 4;
-        List<string> directoryList = new List<string>(System.IO.Directory.EnumerateDirectories("C:\\Users\\Admin\\Documents\\Dolphin Emulator"));
         int i = 0;
         int sizeOfTable = 8;
         float x;
@@ -24,21 +24,21 @@ public class Manager : MonoBehaviour
         Vector3 scale;
         int xInTable;
         int yInTable;
-        foreach (string directory in directoryList)
+        DirectoryInfo di = new DirectoryInfo("C:\\Users\\Admin\\Documents\\Dolphin Emulator");
+        IEnumerable<DirectoryInfo> directoryList = di.EnumerateDirectories();
+
+        foreach (DirectoryInfo directory in directoryList)
         {
             i+= (sizeOfTable + GAP_BETWEEN_TABLES);
             GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
             table.transform.localScale = new Vector3(sizeOfTable, 1, sizeOfTable);
             table.transform.position = new Vector3(0, 1, i);
-            List<string> subDirectoriesList = new List<string>(System.IO.Directory.EnumerateDirectories(directory.ToString()));
-            subFilesList = new List<string>(System.IO.Directory.EnumerateFiles(directory.ToString()));
-            List<string> subElementsList = new List<string>(subDirectoriesList);
-
-            Debug.Log(directory);
+            IEnumerable<DirectoryInfo> subDirectoriesList = directory.EnumerateDirectories();
+            IEnumerable<FileInfo> subFilesList = directory.EnumerateFiles();
 
             xInTable = 0;
             yInTable = 0;
-            foreach (string subDirectory in subDirectoriesList)
+            foreach (DirectoryInfo subDirectory in subDirectoriesList)
             {               
                 GameObject subCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 subCube.transform.SetParent(table.transform);
@@ -60,14 +60,11 @@ public class Manager : MonoBehaviour
                 xInTable++;
             }
 
-            foreach (string subFile in subFilesList)
+            foreach (FileInfo subFile in subFilesList)
             {
                 GameObject subCube = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 subCube.transform.SetParent(table.transform);
-                StringBuilder sbFileName = new StringBuilder(subFile);
-
-                Debug.Log(sbFileName.ToString());
-                
+              
 
                 scale = subCube.transform.localScale;
                 x = scale.x;
